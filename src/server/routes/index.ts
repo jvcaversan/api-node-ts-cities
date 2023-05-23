@@ -8,6 +8,11 @@ router.get("/", (req, res) => {
   return res.send("ola dev");
 });
 
+router.get(
+  "/cidades",
+  CidadesController.getAllValidation,
+  CidadesController.getAll
+);
 router.post(
   "/cidades",
   CidadesController.createValidation,
