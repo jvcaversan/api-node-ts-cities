@@ -4,4 +4,4 @@ yarn-error.log
 
 /build
 /coverage
-.sqlite
+*.sqlite
