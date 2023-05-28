@@ -1,6 +1,12 @@
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
-import { CidadesController, PessoasController } from "./../controllers";
+import {
+  CidadesController,
+  PessoasController,
+  UsuariosController,
+} from "./../controllers";
+import { getByIdValidation } from "../controllers/pessoas/GetById";
+import { create } from "../controllers/pessoas/Create";
 
 const router = Router();
 
@@ -60,6 +66,20 @@ router.delete(
   "/pessoas/:id",
   PessoasController.deleteByIdValidation,
   PessoasController.deleteById
+);
+
+// routes usuario
+
+router.post(
+  "/entrar",
+  UsuariosController.signInValidation,
+  UsuariosController.signIn
+);
+
+router.post(
+  "/cadastrar",
+  UsuariosController.signUpValidation,
+  UsuariosController.signUp
 );
 
 export { router };

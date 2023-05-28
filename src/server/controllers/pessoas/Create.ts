@@ -17,10 +17,7 @@ export const createValidation = validation((getSchema) => ({
   ),
 }));
 
-export const create = async (
-  req: Request<{}, {}, IBodyProps>,
-  res: Response
-) => {
+export const create = async (req: Request<{}, {}, IPessoa>, res: Response) => {
   const result = await PessoasProvider.create(req.body);
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
