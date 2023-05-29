@@ -4,7 +4,7 @@ import { validation } from "../../shared/middlewares";
 import { StatusCodes } from "http-status-codes";
 import { IUsuario } from "../../database/models";
 import { UsuariosProvider } from "../../database/providers/usuarios";
-import { PasswordCrypto } from "../../shared/services";
+import { JWTService, PasswordCrypto } from "../../shared/services";
 
 interface IBodyProps extends Omit<IUsuario, "id" | "nome"> {}
 
@@ -43,7 +43,16 @@ export const signIn = async (
       },
     });
   } else {
-    return res.status(StatusCodes.OK).json({ acessToken: "teste.teste.teste" });
+    const acessToken = JWTService.sign({ uid: usuario.id });
+
+    if (acessToken === "JWT_SECRET_NOT_FOUND") {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: {
+          default: "Erro ao gerar token de acesso",
+        },
+      });
+    }
+    return res.status(StatusCodes.OK).json({ acessToken: acessToken });
   }
   // return res.status(StatusCodes.ACCEPTED).json(result);
 };
