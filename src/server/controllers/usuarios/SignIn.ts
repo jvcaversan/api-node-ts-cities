@@ -23,8 +23,8 @@ export const signIn = async (
 ) => {
   const { email, senha } = req.body;
 
-  const result = await UsuariosProvider.getByEmail(email);
-  if (result instanceof Error) {
+  const usuario = await UsuariosProvider.getByEmail(email);
+  if (usuario instanceof Error) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: "Email ou Senha inválido",
@@ -34,13 +34,12 @@ export const signIn = async (
 
   const passwordMatch = await PasswordCrypto.verifyPassword(
     senha,
-    result.senha
+    usuario.senha
   );
-
   if (!passwordMatch) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
-        default: "Email ou Senha inválido",
+        default: "Email ou senha são inválidos",
       },
     });
   } else {
